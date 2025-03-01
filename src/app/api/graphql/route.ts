@@ -1,7 +1,7 @@
 import { ApolloServer } from "@apollo/server";
 import { gql } from "graphql-tag";
 import { startServerAndCreateNextHandler } from "@as-integrations/next";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { MongoClient } from "mongodb";
 
 // MongoDB 接続
@@ -37,11 +37,11 @@ const server = new ApolloServer({
 
 const handler = startServerAndCreateNextHandler<NextRequest>(server);
 
-// **修正: Next.js 15の型に対応**
-export async function GET(req: NextRequest, ctx: { params: any }) {
+// **修正: Next.js 15 で `RouteContext` を使わない**
+export async function GET(req: NextRequest) {
   return handler(req);
 }
 
-export async function POST(req: NextRequest, ctx: { params: any }) {
+export async function POST(req: NextRequest) {
   return handler(req);
 }
