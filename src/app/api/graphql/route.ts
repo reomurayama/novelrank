@@ -1,7 +1,7 @@
 import { ApolloServer } from "@apollo/server";
-import { gql } from "graphql-tag"; // 修正: `graphql-tag` から `gql` をインポート
+import { gql } from "graphql-tag";
 import { startServerAndCreateNextHandler } from "@as-integrations/next";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { MongoClient } from "mongodb";
 
 // MongoDB 接続
@@ -36,4 +36,12 @@ const server = new ApolloServer({
 });
 
 const handler = startServerAndCreateNextHandler<NextRequest>(server);
-export { handler as GET, handler as POST };
+
+// **修正: Next.js 15の型に対応**
+export async function GET(req: NextRequest, ctx: { params: any }) {
+  return handler(req);
+}
+
+export async function POST(req: NextRequest, ctx: { params: any }) {
+  return handler(req);
+}
